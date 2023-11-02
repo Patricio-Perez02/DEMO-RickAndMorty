@@ -9,16 +9,38 @@ import SwiftUI
 
 struct CharactersView: View {
     @StateObject private var viewModel = CharactersViewModel()
+    @Namespace var animation
+    private let columns = [ GridItem(.flexible()), GridItem(.flexible()) ]
     
     var body: some View {
-        VStack {
-            ForEach(viewModel.characters, id: \.id) { character in
-                Text(character.name ?? "")
-                    .font(.title2)
-                    .bold()
-                    .foregroundStyle(.orange)
+        ZStack(alignment: .top, content: {
+            
+            if let error = viewModel.error {
+                ErrorView(messages: error)
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 0, content: {
+                        ForEach(Array(viewModel.characters.enumerated()), id: \.element) { index, character in
+                            CharacterCell(character: character)
+                                .matchedGeometryEffect(id: character.name ?? "", in: animation)
+                                .onTapGesture {
+                                    withAnimation {
+                                        viewModel.selectedCharacter = character
+                                        viewModel.showCharacterDetail.toggle()
+                                    }
+                                }
+                        }
+                    })
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .scrollIndicators(.never)
+                
+                if viewModel.showCharacterDetail {
+                    CharacterDetailView(animation: animation)
+                        .environmentObject(viewModel)
+                }
             }
-        }
+        })
         .onAppear {
             getCharacters()
         }

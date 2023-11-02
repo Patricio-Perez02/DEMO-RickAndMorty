@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NameUrlResponse: Codable {
+struct NameUrlResponse: Codable, Hashable {
     let name, url: String?
     
     enum CodingKeys: String, CodingKey {

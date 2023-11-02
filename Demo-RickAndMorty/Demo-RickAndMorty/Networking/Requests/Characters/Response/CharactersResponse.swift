@@ -28,7 +28,11 @@ struct CharactersResponse: Codable {
     }
 }
 
-struct Character: Codable {
+struct Character: Codable, Hashable {
+    static func == (lhs: Character, rhs: Character) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: Int?
     let name, status, species, type, gender, image, url, created: String?
     let episode: [String]?

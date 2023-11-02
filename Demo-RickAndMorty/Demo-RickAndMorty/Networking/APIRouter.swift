@@ -19,10 +19,13 @@ enum APIRouter {
     }
     
     var path: String {
+        var apiPath = ""
         switch self {
         case .getCharacters:
-            return "/api/character"
+            apiPath = "/character"
         }
+        
+        return "/api" + apiPath
     }
     
     var method: String {
