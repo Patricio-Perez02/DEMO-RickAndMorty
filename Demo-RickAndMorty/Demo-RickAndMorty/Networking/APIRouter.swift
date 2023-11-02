@@ -8,7 +8,7 @@
 import Foundation
 
 enum APIRouter {
-    case getCharacters
+    case getCharacters(id: Int)
     
     var host: String {
         return Constants.Network.API_HOST
@@ -37,8 +37,8 @@ enum APIRouter {
     
     var queryParams: [URLQueryItem]? {
         switch self {
-        default:
-            return nil
+        case .getCharacters(let id): 
+            return [URLQueryItem(name: "page", value: "\(id)")]
         }
     }
 }

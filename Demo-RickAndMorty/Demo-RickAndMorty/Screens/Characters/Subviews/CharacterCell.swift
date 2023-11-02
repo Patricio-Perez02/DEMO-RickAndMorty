@@ -23,9 +23,9 @@ struct CharacterCell: View {
                         VStack {
                             Spacer()
                             ProgressView()
-                                .tint(.white)
                             Spacer()
                         }
+                        .tint(.cyan)
                     }
                     
                     Spacer()
